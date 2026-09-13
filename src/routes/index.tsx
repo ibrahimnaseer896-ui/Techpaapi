@@ -16,6 +16,7 @@ import ava from "@/assets/testimonial-ava.jpg";
 import tylerThumbnail from "@/assets/074101f7-43f2-4d18-a909-6d61cbe4758d.png";
 import stuartThumbnail from "@/assets/e9429e5b-f51a-44ac-b6a0-c2b457bad256.png";
 import akbarThumbnail from "@/assets/87962a73-f686-492b-96a2-11d81c1e87b6.png";
+import logoImage from "@/assets/techpaapi_logo12.png";
 import demoVideo from "@/assets/funnel-demo.mp4.asset.json";
 
 export const Route = createFileRoute("/")({
@@ -85,7 +86,7 @@ const faqs = [
 ];
 
 function Logo() {
-  return <a href="#top" className="flex items-center gap-2 font-display text-xl font-extrabold"><span className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground"><Zap className="size-4 fill-current" /></span>TechPaapi</a>;
+  return <a href="#top" className="flex items-center gap-0 font-display text-xl font-extrabold"><img src={logoImage} alt="" className="-mr-2 size-12 rounded-md object-cover object-center" />TechPaapi</a>;
 }
 
 function DemoDialog({ children }: { children: React.ReactNode }) {
