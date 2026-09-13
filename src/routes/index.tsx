@@ -86,7 +86,7 @@ const faqs = [
 ];
 
 function Logo() {
-  return <a href="#top" className="flex items-center gap-0 font-display text-xl font-extrabold"><img src={logoImage} alt="" className="-mr-2 size-12 rounded-md object-cover object-center" />TechPaapi</a>;
+  return <a href="#top" className="flex items-center gap-0 font-display text-xl font-extrabold"><img src={logoImage} alt="" className="-mr-2 size-12 rounded-md object-cover object-center" /><span>Tech</span><span className="text-[#F5730C]">Paapi</span></a>;
 }
 
 function DemoDialog({ children }: { children: React.ReactNode }) {
