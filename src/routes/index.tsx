@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  ArrowLeft, ArrowRight, BadgeCheck, BarChart3, Check,
+  ArrowLeft, ArrowRight, ArrowUp, BadgeCheck, BarChart3, Check, Moon, Sun,
   CirclePlay, Code2, CreditCard, Facebook, Instagram, Layers3, Mail,
   Menu, MousePointer2, Play, Rocket, Sparkles, Split,
   WandSparkles, X, Zap,
@@ -291,6 +291,29 @@ function Index() {
   const [annual, setAnnual] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem("techpaapi-theme");
+    if (savedTheme === "light" || savedTheme === "dark") setTheme(savedTheme);
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("light", theme === "light");
+    window.localStorage.setItem("techpaapi-theme", theme);
+  }, [theme]);
+
+  useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 500);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   return (
     <main id="top" className="min-h-screen overflow-hidden bg-background text-foreground">
@@ -299,8 +322,8 @@ function Index() {
         <div className="site-container grid grid-cols-[minmax(0,1fr)_auto] items-center py-4 lg:flex lg:justify-between">
           <Logo />
           <nav className="hidden items-center gap-8 text-sm text-muted-foreground lg:flex" aria-label="Main navigation">{[["Features","#features"],["Case Studies","#stories"],["Pricing","#pricing"],["Resources","#faq"]].map(([label,href]) => <a className="nav-link" href={href} key={label}>{label}</a>)}</nav>
-          <div className="hidden items-center gap-3 lg:flex"><Button variant="hero" onClick={() => setDiscoveryOpen(true)}>Book Discovery Call <ArrowRight /></Button></div>
-          <Button aria-label="Open menu" variant="glass" size="icon" className="lg:hidden" onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</Button>
+          <div className="hidden items-center gap-3 lg:flex"><Button variant="glass" size="icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>{theme === "dark" ? <Sun /> : <Moon />}</Button><Button variant="hero" onClick={() => setDiscoveryOpen(true)}>Book Discovery Call <ArrowRight /></Button></div>
+          <div className="flex items-center gap-2 lg:hidden"><Button variant="glass" size="icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>{theme === "dark" ? <Sun /> : <Moon />}</Button><Button aria-label="Open menu" variant="glass" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</Button></div>
         </div>
         {mobileOpen && <nav className="site-container grid gap-2 border-t border-border py-4 lg:hidden">{[["Features","#features"],["Case Studies","#stories"],["Pricing","#pricing"],["Resources","#faq"]].map(([label,href]) => <a onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm text-muted-foreground hover:bg-card" href={href} key={label}>{label}</a>)}<Button variant="hero" className="mt-2" onClick={() => { setMobileOpen(false); setDiscoveryOpen(true); }}>Book Discovery Call</Button></nav>}
       </header>
@@ -362,6 +385,7 @@ function Index() {
       <section className="site-container pb-24"><div className="final-cta"><div className="cta-grid"/><div className="relative z-10"><span className="kicker text-primary-foreground/70">YOUR NEXT LAUNCH STARTS HERE</span><h2>Turn your next idea into revenue.</h2><p>Build your complete funnel free for 14 days. Launch today, not someday.</p><Button variant="glass" size="xl" className="mt-8 bg-foreground text-background hover:bg-foreground/90">Start building free <ArrowRight /></Button></div></div></section>
 
       <footer className="border-t border-border bg-surface/60"><div className="site-container py-14"><div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.5fr_repeat(4,1fr)]"><div><Logo/><p className="mt-4 max-w-xs text-sm leading-6 text-muted-foreground">The intelligent platform for building customer journeys that convert.</p><div className="mt-5 flex gap-2"><Button variant="glass" size="icon" aria-label="Instagram"><Instagram/></Button><Button variant="glass" size="icon" aria-label="Facebook"><Facebook/></Button></div></div>{footerGroups.map(({ title, links })=><div key={title}><h3 className="text-sm font-bold">{title}</h3><ul className="mt-4 space-y-3">{links.map(link=><li key={link}><a href="#top" className="text-sm text-muted-foreground hover:text-foreground">{link}</a></li>)}</ul></div>)}</div><div className="mt-14 flex flex-col justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground sm:flex-row"><span>© 2026 TechPaapi. All rights reserved.</span><span>Made for ambitious builders.</span></div></div></footer>
+      {showBackToTop && <button type="button" onClick={scrollToTop} aria-label="Back to top" title="Back to top" className="fixed bottom-5 right-5 z-50 grid size-11 place-items-center rounded-full border border-border bg-card text-foreground shadow-lg transition hover:border-primary hover:text-primary"><ArrowUp className="size-5" /></button>}
       <DiscoveryCallDialog open={discoveryOpen} onOpenChange={setDiscoveryOpen} />
     </main>
   );
