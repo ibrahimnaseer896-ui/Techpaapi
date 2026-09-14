@@ -366,6 +366,20 @@ function Index() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
+  function handleHeroPointerMove(event: React.PointerEvent<HTMLElement>) {
+    if (event.pointerType === "touch" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 28;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 20;
+    event.currentTarget.style.setProperty("--pointer-x", `${x}px`);
+    event.currentTarget.style.setProperty("--pointer-y", `${y}px`);
+  }
+
+  function resetHeroPointer(event: React.PointerEvent<HTMLElement>) {
+    event.currentTarget.style.setProperty("--pointer-x", "0px");
+    event.currentTarget.style.setProperty("--pointer-y", "0px");
+  }
+
   return (
     <main id="top" className="min-h-screen overflow-hidden bg-background text-foreground">
       <div className="announcement"><span className="animate-pulse-soft size-1.5 rounded-full bg-success" /><strong>NEW</strong><span>AI Funnel Builder 2.0 is live</span><a href="#features">See what’s new <ArrowRight /></a></div>
@@ -379,11 +393,16 @@ function Index() {
         {mobileOpen && <nav className="site-container grid gap-2 border-t border-border py-4 lg:hidden">{[["Features","#features"],["Case Studies","#stories"],["Pricing","#pricing"],["Resources","#faq"]].map(([label,href]) => <a onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm text-muted-foreground hover:bg-card" href={href} key={label}>{label}</a>)}<Button variant="hero" className="mt-2" onClick={() => { setMobileOpen(false); setDiscoveryOpen(true); }}>Book Discovery Call</Button></nav>}
       </header>
 
-      <section className="hero-section">
+      <section className="hero-section" onPointerMove={handleHeroPointerMove} onPointerLeave={resetHeroPointer}>
         <div className="hero-grid" />
+        <div className="hero-mesh" />
+        <div className="hero-particles" />
         <div className="site-container relative z-10 pt-20 text-center sm:pt-28">
           <div className="eyebrow"><Sparkles /> AI-powered funnel operating system</div>
-          <h1 className="mx-auto mt-7 max-w-5xl font-display text-5xl font-extrabold leading-[1.02] sm:text-7xl lg:text-8xl">Your next high-converting funnel, <span className="text-gradient">built in minutes.</span></h1>
+          <h1 className="mx-auto mt-7 max-w-5xl font-display text-5xl font-extrabold leading-[1.02] sm:text-7xl lg:text-8xl" aria-label="Your next high-converting funnel, built in minutes.">
+            <span className="text-reveal-line"><span>Your next high-converting</span></span>
+            <span className="text-reveal-line"><span>funnel, <span className="text-gradient">built in minutes.</span></span></span>
+          </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Launch pages, checkout, email, testing, and analytics from one intelligent workspace. No code. No tool chaos. Just more revenue.</p>
           <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Button variant="hero" size="xl">Build your funnel now <ArrowRight /></Button><DemoDialog><Button variant="glass" size="xl"><CirclePlay /> Watch 60-sec demo</Button></DemoDialog></div>
           <p className="mt-4 text-xs text-muted-foreground">14-day free trial · No credit card · Cancel anytime</p>
