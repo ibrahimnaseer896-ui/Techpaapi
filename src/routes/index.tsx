@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
   ArrowLeft, ArrowRight, ArrowUp, BadgeCheck, BarChart3, Check, Moon, Sun,
   CirclePlay, Code2, CreditCard, Facebook, Instagram, Layers3, Mail,
@@ -87,6 +87,56 @@ const faqs = [
 
 function Logo() {
   return <a href="#top" className="flex items-center gap-0 font-display text-xl font-extrabold"><img src={logoImage} alt="" className="-mr-2 size-12 rounded-md object-cover object-center" /><span>Tech</span><span className="text-[#F5730C]">Paapi</span></a>;
+}
+
+function TiltCard({ children, className }: { children: ReactNode; className: string }) {
+  const [tilt, setTilt] = useState<CSSProperties>({});
+
+  function handlePointerMove(event: React.PointerEvent<HTMLElement>) {
+    if (event.pointerType === "touch" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    setTilt({ "--tilt-x": `${y * -8}deg`, "--tilt-y": `${x * 8}deg` } as CSSProperties);
+  }
+
+  function resetTilt() {
+    setTilt({});
+  }
+
+  return <article className={`tilt-card ${className}`} style={tilt} onPointerMove={handlePointerMove} onPointerLeave={resetTilt}>{children}</article>;
+}
+
+function useMagneticInteractions() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || window.matchMedia("(pointer: coarse)").matches) return;
+    const elements = Array.from(document.querySelectorAll<HTMLElement>("button:not([data-static]), .nav-link, .feature-link"));
+
+    const handleMove = (event: PointerEvent) => {
+      const element = event.currentTarget as HTMLElement;
+      const bounds = element.getBoundingClientRect();
+      const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 8;
+      const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 8;
+      element.style.setProperty("--magnetic-x", `${x}px`);
+      element.style.setProperty("--magnetic-y", `${y}px`);
+    };
+    const reset = (event: PointerEvent) => {
+      const element = event.currentTarget as HTMLElement;
+      element.style.setProperty("--magnetic-x", "0px");
+      element.style.setProperty("--magnetic-y", "0px");
+    };
+
+    elements.forEach((element) => {
+      element.classList.add("magnetic-target");
+      element.addEventListener("pointermove", handleMove);
+      element.addEventListener("pointerleave", reset);
+    });
+    return () => elements.forEach((element) => {
+      element.classList.remove("magnetic-target");
+      element.removeEventListener("pointermove", handleMove);
+      element.removeEventListener("pointerleave", reset);
+    });
+  });
 }
 
 function DemoDialog({ children }: { children: React.ReactNode }) {
@@ -293,6 +343,7 @@ function Index() {
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [theme, setTheme] = useState<"dark" | "light">("dark");
+  useMagneticInteractions();
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("techpaapi-theme");
@@ -344,7 +395,7 @@ function Index() {
 
       <section id="features" className="section-space site-container">
         <div className="section-heading"><div><span className="kicker">EVERYTHING CONNECTED</span><h2>One system. Every step to <span className="text-gradient">the sale.</span></h2></div><p>Stop duct-taping tools together. TechPaapi brings your entire customer journey into one fast, focused platform.</p></div>
-        <div className="mt-14 grid gap-3 md:grid-cols-2 lg:grid-cols-3">{features.map((feature, i) => <article className="feature-card" key={feature.title}><div className="feature-number">0{i+1}</div><div className="feature-icon"><feature.icon /></div><h3>{feature.title}</h3><p>{feature.text}</p><span className="feature-link">Explore feature <ArrowRight /></span></article>)}</div>
+        <div className="mt-14 grid gap-3 md:grid-cols-2 lg:grid-cols-3">{features.map((feature, i) => <TiltCard className="feature-card" key={feature.title}><div className="feature-number">0{i+1}</div><div className="feature-icon"><feature.icon /></div><h3>{feature.title}</h3><p>{feature.text}</p><span className="feature-link">Explore feature <ArrowRight /></span></TiltCard>)}</div>
       </section>
 
       <section className="section-space border-y border-border bg-surface/35">
@@ -359,7 +410,7 @@ function Index() {
         <div className="mx-auto max-w-2xl text-center"><span className="kicker">CASE STUDIES</span><h2 className="section-title mt-4">Real founders. <span className="text-gradient">Real results.</span></h2><p className="section-copy mx-auto mt-5">Watch what happens when the funnel is built right.</p></div>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {stories.map((story) => (
-            <article key={story.name} className="story-card">
+            <TiltCard key={story.name} className="story-card">
               <VimeoDialog vimeoId={story.vimeoId} title={`${story.name} — ${story.company}`}>
                 <button className="group relative block w-full" aria-label={`Play ${story.name}'s story`}>
                   <img src={story.thumb} alt={`${story.name} of ${story.company}`} width={1280} height={720} loading="lazy" className="aspect-video w-full object-cover" />
@@ -371,13 +422,13 @@ function Index() {
                 <div><p className="font-bold">{story.name} <BadgeCheck className="inline size-4 text-info" /></p><p className="text-sm text-muted-foreground">{story.company}</p></div>
                 <span className={`metric-badge rounded-md px-3 py-2 text-xs font-bold ${story.placeholder ? "opacity-60" : ""}`}>{story.metric}</span>
               </div>
-            </article>
+            </TiltCard>
           ))}
         </div>
       </section>
 
       <section id="pricing" className="section-space border-y border-border bg-surface/35"><div className="site-container"><div className="mx-auto max-w-2xl text-center"><span className="kicker">SIMPLE, SCALABLE PRICING</span><h2 className="section-title mt-4">Start small. Grow without limits.</h2><p className="section-copy mx-auto mt-5">Every plan includes the complete builder, secure hosting, and zero transaction fees.</p><div className="mt-7 inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2.5"><span className={!annual?"font-bold":"text-muted-foreground"}>Monthly</span><Switch checked={annual} onCheckedChange={setAnnual} aria-label="Use annual billing" /><span className={annual?"font-bold":"text-muted-foreground"}>Annual</span><span className="rounded-full bg-success/10 px-2 py-1 text-[10px] font-bold text-success">SAVE 20%</span></div></div>
-          <div className="mt-14 grid gap-4 lg:grid-cols-3">{plans.map((plan)=><article key={plan.name} className={`pricing-card ${plan.popular?"pricing-popular":""}`}>{plan.popular&&<div className="popular-badge">MOST POPULAR</div>}<h3>{plan.name}</h3><p className="mt-2 text-sm text-muted-foreground">{plan.text}</p><div className="mt-7 flex items-end gap-1"><span className="font-display text-5xl font-extrabold">${annual?Math.round(plan.monthly*.8):plan.monthly}</span><span className="mb-1 text-muted-foreground">/mo</span></div>{annual&&<p className="mt-2 text-xs text-muted-foreground">Billed annually</p>}<Button variant={plan.popular?"hero":"glass"} className="mt-7 h-11 w-full">Start 14-day trial <ArrowRight /></Button><ul className="mt-8 space-y-3">{plan.items.map(item=><li key={item} className="flex gap-3 text-sm"><Check className="size-4 shrink-0 text-success" />{item}</li>)}</ul></article>)}</div>
+          <div className="mt-14 grid gap-4 lg:grid-cols-3">{plans.map((plan)=><TiltCard key={plan.name} className={`pricing-card ${plan.popular?"pricing-popular":""}`}>{plan.popular&&<div className="popular-badge">MOST POPULAR</div>}<h3>{plan.name}</h3><p className="mt-2 text-sm text-muted-foreground">{plan.text}</p><div className="mt-7 flex items-end gap-1"><span className="font-display text-5xl font-extrabold">${annual?Math.round(plan.monthly*.8):plan.monthly}</span><span className="mb-1 text-muted-foreground">/mo</span></div>{annual&&<p className="mt-2 text-xs text-muted-foreground">Billed annually</p>}<Button variant={plan.popular?"hero":"glass"} className="mt-7 h-11 w-full">Start 14-day trial <ArrowRight /></Button><ul className="mt-8 space-y-3">{plan.items.map(item=><li key={item} className="flex gap-3 text-sm"><Check className="size-4 shrink-0 text-success" />{item}</li>)}</ul></TiltCard>)}</div>
         </div></section>
 
       <section id="faq" className="section-space site-container"><div className="grid gap-12 lg:grid-cols-[.75fr_1.25fr]"><div><span className="kicker">QUESTIONS, ANSWERED</span><h2 className="section-title mt-4">Everything you need to know.</h2><p className="section-copy mt-5">Still curious? Our team is one message away.</p><Button variant="glass" className="mt-7">Talk to a funnel expert <ArrowRight /></Button></div><Accordion type="single" collapsible className="border-t border-border">{faqs.map(({ question, answer })=><AccordionItem key={question} value={question} className="border-border"><AccordionTrigger className="py-6 text-base hover:no-underline">{question}</AccordionTrigger><AccordionContent className="max-w-2xl pb-6 leading-7 text-muted-foreground">{answer}</AccordionContent></AccordionItem>)}</Accordion></div></section>
