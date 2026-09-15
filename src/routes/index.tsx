@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import {
   ArrowLeft, ArrowRight, ArrowUp, BadgeCheck, BarChart3, Check, Moon, Sun,
@@ -7,7 +7,6 @@ import {
   WandSparkles, X, Zap,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import maya from "@/assets/testimonial-maya.jpg";
@@ -34,12 +33,36 @@ export const Route = createFileRoute("/")({
 });
 
 const features = [
-  { icon: WandSparkles, title: "AI Page Builder", text: "Describe your offer. Get a complete, on-brand funnel engineered to convert." },
-  { icon: CreditCard, title: "1-Click Checkout", text: "Remove friction with fast checkout, order bumps, upsells, and subscriptions." },
-  { icon: Mail, title: "Email Sequences", text: "Nurture every lead with behavior-based campaigns that run while you sleep." },
-  { icon: Split, title: "A/B Split Testing", text: "Test pages, headlines, and offers with automatic traffic distribution." },
-  { icon: BarChart3, title: "Deep Analytics", text: "See the revenue behind every click, campaign, page, and customer journey." },
-  { icon: Code2, title: "Zero-Code Launch", text: "Connect your domain, payments, and tools without touching a line of code." },
+  {
+    slug: "ghl-crm-architecture",
+    icon: Layers3,
+    title: "GoHighLevel CRM Architecture & Done-For-You Implementation",
+    text: "Setup & compliance, custom pipeline architecture, speed-to-lead engines, and database reactivation that recover dormant leads and automate responses inside client-owned systems.",
+  },
+  {
+    slug: "shopify-ecommerce-web-development",
+    icon: CreditCard,
+    title: "High-Performance Shopify E-Commerce & Web Development",
+    text: "OS 2.0 engineering, seamless replatforming, and CRO retention systems designed for speed, compliance, and conversion optimization.",
+  },
+  {
+    slug: "funnel-systems-paid-acquisition",
+    icon: Rocket,
+    title: "High-Converting Funnel Systems & Paid Acquisition",
+    text: "Direct-response funnels, paid media testing, and closed-loop attribution that connect ad spend to booked calls and revenue outcomes.",
+  },
+  {
+    slug: "rare-high-ticket-moats",
+    icon: BadgeCheck,
+    title: "Rare & High-Ticket Differentiating Moats",
+    text: "Trustpilot and review defense systems, 24/7 live chat ops, Instagram DM automation, and WhatsApp Business API workflows that create frictionless trust.",
+  },
+  {
+    slug: "local-seo-gbp-authority",
+    icon: BarChart3,
+    title: "Local SEO, Google Business Profile & Authority",
+    text: "GBP dominance, local authority pages, citation cleanup, and map-pack optimization to improve local visibility and conversion quality.",
+  },
 ];
 
 const testimonials = [
@@ -58,10 +81,95 @@ const stories = [
   { thumb: ava, name: "Your name", company: "Your company", metric: "Your metric", vimeoId: "1073388946", placeholder: true },
 ];
 
+const caseStudies = [
+  {
+    title: "Local Emergency & Commercial Services",
+    client: "Plumbing & HVAC",
+    metric: "+205% ROAS in 6 months",
+    metricDetail: "$2K/mo spend generated $4.1K/mo net profit",
+    challenge: "A mid-sized regional contractor was burning ad spend on unsegmented Google Ads with zero closed-loop tracking. Weekends and evenings were especially costly, forfeiting high-margin emergency jobs to competitors.",
+    solution: "TECH PAAPI deployed a complete GoHighLevel sub-account with Twilio call routing, 30-second missed-call text-backs, AI conversational booking, and restructured Google Search campaigns by exact high-ticket service line.",
+    outcomes: ["Cost per Lead dropped from $80 to $48 within 90 days", "Inbound calls surged to 472 verified leads per month", "Technician schedule utilization reached 90%+ throughout off-peak months"],
+    bars: [76, 92, 84],
+  },
+  {
+    title: "High-Ticket Professional Legal Services",
+    client: "Personal Injury Law Firm",
+    metric: "+279% organic traffic YoY",
+    metricDetail: "+150% case inquiries | $4.2M attributed pipeline",
+    challenge: "The firm was losing high-value law searches on pages two and three while expensive CPCs created bounce rates and unqualified inquiries.",
+    solution: "We rebuilt the technical SEO foundation with a 100/100 PageSpeed overhaul, programmatic practice-area landing pages, frictionless multi-step qualifying intake, and instant SMS qualification workflows.",
+    outcomes: ["279% increase in organic search traffic", "60+ high-value target keywords ranking in the top 3", "$4.2M in verified case pipeline generated"],
+    bars: [88, 72, 96],
+  },
+  {
+    title: "Scaling DTC E-Commerce & Seamless Shopify Migration",
+    client: "Apparel Brand",
+    metric: "+84% conversion rate lift",
+    metricDetail: "4.8x blended ROAS | Zero SEO equity loss | Sub-1.2s mobile speed",
+    challenge: "A legacy WooCommerce store was losing revenue to slow checkout abandonment and inconsistent inventory synchronization.",
+    solution: "We engineered a custom Shopify OS 2.0 storefront with sub-1.2s load speeds, executed a full 301 redirect mapping, and deployed integrated Klaviyo email flows with WhatsApp abandoned-cart recovery.",
+    outcomes: ["Mobile conversion rate jumped from 1.6% to 2.95% within 45 days", "Recovered over $18,500 per month in previously lost cart revenue", "Migration preserved organic search equity"],
+    bars: [94, 81, 87],
+  },
+  {
+    title: "Database Reactivation & CRM Automation Sprint",
+    client: "Health & Business Consulting",
+    metric: "10,000 dormant leads reactivated",
+    metricDetail: "$68,000 cash collected in 14 days | Zero additional ad spend",
+    challenge: "More than 10,000 cold leads had accumulated over three years in disconnected spreadsheets while the team relied on manual follow-up.",
+    solution: "We completed a list hygiene cleanup, synchronized the webhook and calendar systems into GoHighLevel, and launched a conversational two-word SMS and email reactivation campaign connected to an AI calendar scheduler.",
+    outcomes: ["640+ warm conversations started within 48 hours", "182 qualified conversations booked", "$68,000 collected from previously dormant demand"],
+    bars: [91, 68, 98],
+  },
+];
+
 const plans = [
-  { name: "Starter", monthly: 29, text: "For your first winning funnel", items: ["3 active funnels", "10,000 visitors / mo", "AI page builder", "Email automations"] },
-  { name: "Growth", monthly: 79, popular: true, text: "For scaling products and teams", items: ["25 active funnels", "100,000 visitors / mo", "A/B testing suite", "Advanced analytics", "Priority support"] },
-  { name: "Agency", monthly: 199, text: "For client work at scale", items: ["Unlimited funnels", "500,000 visitors / mo", "10 client workspaces", "White-label reports", "Team permissions"] },
+  {
+    name: "Starter Growth",
+    label: "Launchpad",
+    price: "$1,500",
+    setup: "+$1,000 setup",
+    text: "For local service businesses and early-stage Shopify brands",
+    items: [
+      "Full GoHighLevel core setup or Shopify maintenance",
+      "1 custom high-converting funnel / landing page",
+      "Automated SMS/email speed-to-lead follow-up",
+      "Automated review generation engine (Google/Trustpilot)",
+      "Monthly performance reporting and tech support",
+    ],
+  },
+  {
+    name: "Scale Engine",
+    label: "Most Popular",
+    price: "$3,000",
+    setup: "+$1,500 setup",
+    popular: true,
+    text: "For growing brands, multi-location clinics, and home services",
+    items: [
+      "Everything in Starter",
+      "Active paid ads management (Meta or Google Ads up to $5k spend)",
+      "Full database reactivation campaign for dormant leads",
+      "WhatsApp Business API and Instagram DM automation",
+      "Local SEO and Google Business Profile monthly optimization",
+      "24/7 AI conversational lead qualification bot",
+    ],
+  },
+  {
+    name: "Enterprise Dominance",
+    label: "Done-For-You",
+    price: "$5,000–$7,500",
+    setup: "Setup waived",
+    text: "For aggressive DTC brands, high-ticket nationals, and agencies",
+    items: [
+      "Everything in Scale Engine",
+      "Full-stack omnichannel Meta + Google Search + PMax",
+      "Custom Shopify OS 2.0 development and continuous CRO sprints",
+      "Advanced GHL custom webhooks, APIs, and n8n/Make orchestration",
+      "24/7 managed live chat customer support operators",
+      "Weekly executive strategy calls and a dedicated Slack channel",
+    ],
+  },
 ];
 
 const steps = [
@@ -69,6 +177,102 @@ const steps = [
   { icon: WandSparkles, title: "Make it yours with AI", text: "Drop in your offer. AI writes, designs, and connects the journey in your brand voice." },
   { icon: Rocket, title: "Launch, learn, convert", text: "Publish to your domain, watch the data arrive, and let smart tests improve performance." },
 ];
+
+const deploymentStages = [
+  { number: "01", phase: "Days 1–7", label: "Architecture & Audit", text: "DNS setup, A2P 10DLC registration, GHL pipeline mapping, and Shopify wireframes." },
+  { number: "02", phase: "Days 8–18", label: "Build & Integration", text: "Custom funnel design, workflow engineering, WhatsApp/Twilio integration, and email deliverability." },
+  { number: "03", phase: "Days 19–25", label: "Stress-Test & Migration", text: "End-to-end webhook testing, database reactivation dry runs, and test-call simulations." },
+  { number: "04", phase: "Days 26–30", label: "Handover & Launch", text: "Staff training portal, dashboard walkthrough, key handover, and live deployment." },
+];
+
+const automationMenuGroups = [
+  {
+    label: "GoHighLevel Systems",
+    kicker: "GOHIGHLEVEL SYSTEMS",
+    items: [
+      ["GHL Expert", "CRM architecture and implementation", "gohighlevel-expert"],
+      ["GHL Setup", "A clean account from day one", "gohighlevel-setup"],
+      ["GHL CRM Setup", "Pipelines, fields, calendars and routing", "gohighlevel-crm-setup"],
+      ["GHL Automation", "Workflows that hold under pressure", "gohighlevel-automation"],
+      ["GHL Funnels", "Conversion paths built in your account", "gohighlevel-funnels"],
+      ["GHL Migration", "Move systems without losing signal", "gohighlevel-migration"],
+    ],
+  },
+  {
+    label: "AI & Automation",
+    kicker: "AI VOICE",
+    items: [
+      ["AI Voice Agents", "The voice hub", "ai-voice-agents"],
+      ["AI Receptionist", "Answers every inbound call", "ai-receptionist"],
+      ["AI Appointment Setter", "Books outbound", "ai-appointment-setter"],
+      ["AI SDR", "Prospects and qualifies", "ai-sdr"],
+      ["AI Calling Bots", "The calling layer, built properly", "ai-calling-bots"],
+    ],
+  },
+  {
+    label: "AI Chat & Messaging",
+    kicker: "AI CHAT & MESSAGING",
+    items: [
+      ["AI Chatbot", "Website and in-CRM chat", "ai-chatbot"],
+      ["Conversational AI", "Multi-channel dialogue design", "conversational-ai"],
+      ["AI Customer Support", "Deflect repetitive tickets", "ai-customer-support"],
+      ["WhatsApp Automation", "Two-way conversations at scale", "whatsapp-automation"],
+      ["Instagram DM Automation", "Turn DMs into bookings", "instagram-dm-automation"],
+    ],
+  },
+  {
+    label: "Automation Platforms",
+    kicker: "AUTOMATION PLATFORMS",
+    items: [
+      ["Workflow Automation", "Cross-platform orchestration", "workflow-automation"],
+      ["Make.com", "Visual automation systems", "make-automation"],
+      ["n8n", "Flexible open workflow infrastructure", "n8n-automation"],
+      ["Zapier", "Fast app-to-app connections", "zapier-automation"],
+      ["Vapi", "Voice infrastructure for AI agents", "vapi"],
+      ["Retell AI", "Natural voice conversations", "retell-ai"],
+    ],
+  },
+  {
+    label: "For Agencies & Growth",
+    kicker: "FOR AGENCIES",
+    items: [
+      ["White-Label GHL", "Sell the strategy, we fulfil the build", "white-label-ghl"],
+      ["GHL Fulfilment", "A delivery team under your brand", "ghl-fulfillment"],
+      ["Outsourced GHL", "Extend your capacity without hiring", "outsourced-ghl"],
+      ["GHL Development Partner", "Technical depth for complex builds", "ghl-development-partner"],
+      ["Managed GHL Services", "Keep the system improving", "managed-ghl-services"],
+    ],
+  },
+];
+
+function AutomationMegaMenu() {
+  return (
+    <details className="mega-menu relative hidden lg:block">
+      <summary className="nav-link flex cursor-pointer list-none items-center gap-1 text-muted-foreground marker:hidden">AI & Automation <span aria-hidden="true">⌄</span></summary>
+      <div className="mega-menu__panel">
+        <div className="grid gap-0 p-6 sm:grid-cols-2 lg:grid-cols-5">
+              {automationMenuGroups.map((group) => (
+                <div className="border-border p-3 first:pl-0 lg:border-l lg:first:border-l-0" key={group.label}>
+                  <p className="mb-5 text-[10px] font-bold tracking-[0.2em] text-muted-foreground">{group.kicker}</p>
+                  <div className="space-y-4">
+                    {group.items.map(([title, description, slug]) => (
+                      <Link to="/solutions/$slug" params={{ slug }} className="group block rounded-md p-1 transition hover:bg-card" key={slug}>
+                          <span className="block text-sm font-bold text-foreground group-hover:text-primary">{title}</span>
+                          <span className="mt-1 block text-xs leading-5 text-muted-foreground">{description}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+        </div>
+        <div className="flex items-center justify-between border-t border-border px-6 py-4 text-sm">
+              <span className="text-muted-foreground">Systems engineered around how your business actually operates.</span>
+              <Link to="/services/ghl-crm-architecture" className="font-bold text-primary">View core services <ArrowRight className="ml-1 inline size-4" /></Link>
+        </div>
+      </div>
+    </details>
+  );
+}
 
 const footerGroups = [
   { title: "Product", links: ["AI Builder", "Checkout", "Email", "Analytics"] },
@@ -78,11 +282,22 @@ const footerGroups = [
 ];
 
 const faqs = [
-  { question: "Can I migrate my existing funnels?", answer: "Yes. Our migration toolkit handles pages, contacts, domains, and automations. Growth and Agency plans also include guided migration support." },
-  { question: "Can I connect my own domain?", answer: "Absolutely. Connect an existing domain or subdomain in a few guided steps, with secure hosting included." },
-  { question: "What happens after the free trial?", answer: "Your 14-day trial includes all Growth features. Choose a plan to keep publishing, or export your contacts before the trial ends." },
-  { question: "Do you charge transaction fees?", answer: "No. TechPaapi never takes a percentage of your sales. Standard fees from your payment processor still apply." },
-  { question: "Can my team collaborate?", answer: "Yes. Invite teammates, assign access, leave comments, and organize campaigns across workspaces." },
+  {
+    question: "Who is TECH PAAPI, and why does this agency exist?",
+    answer: "The Core Purpose: TECH PAAPI was founded to bridge the massive execution divide in the digital agency ecosystem. Most traditional agencies either sell 'traffic' (ads/SEO) without fixing conversion funnels, or build pretty websites without automated backend CRM workflows. When leads land, they sit unanswered for hours or days. TECH PAAPI exists to engineer unified revenue machines where every dollar of ad spend and every website visitor is immediately captured, qualified, nurtured, and converted via automated, multi-channel pipelines.",
+  },
+  {
+    question: "What is TECH PAAPI's North Star Metric (NSM)?",
+    answer: "The Primary Metric: Speed-to-Qualified-Conversation and Closed Contribution Margin. Unlike agencies focused on vanity metrics (impressions, clicks, or platform ROAS), our North Star is cutting inbound response time from hours to under 45 seconds and generating verifiable, closed revenue for our clients directly inside systems they own.",
+  },
+  {
+    question: "What will TECH PAAPI deliberately NEVER do?",
+    answer: "- No Hostage Situations: We will never build assets inside our own agency accounts to hold client data hostage. Everything is built directly inside the client's GoHighLevel and Shopify infrastructure.\n- No Lazy Templates: We will never deploy generic, unmodified agency snapshot templates without deep custom logic, brand-specific tags, and tested routing triggers.\n- No Vanity Reporting: We will never report vanity metrics without closed-loop pipeline attribution and verified financial impact.",
+  },
+  {
+    question: "Who is our Ideal Client Profile (ICP), and who is NOT a fit?",
+    answer: "- Ideal Client: Growth-focused Local Service Businesses (Plumbing, HVAC, Roofing, Med Spas, Legal, Real Estate), Scaling DTC Shopify Brands doing $10k-$250k/mo, and Marketing Agencies needing White-Label GHL fulfillment squads.\n- Not A Fit: Hobbyists with no product-market fit, businesses unwilling to invest in ad spend or software infrastructure, and clients seeking manual micromanagement rather than scalable automated architecture.",
+  },
 ];
 
 function Logo() {
@@ -338,7 +553,6 @@ function Dashboard() {
 }
 
 function Index() {
-  const [annual, setAnnual] = useState(true);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [discoveryOpen, setDiscoveryOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -381,16 +595,16 @@ function Index() {
   }
 
   return (
-    <main id="top" className="min-h-screen overflow-hidden bg-background text-foreground">
+    <main id="top" className="min-h-screen overflow-x-clip bg-background text-foreground">
       <div className="announcement"><span className="animate-pulse-soft size-1.5 rounded-full bg-success" /><strong>NEW</strong><span>AI Funnel Builder 2.0 is live</span><a href="#features">See what’s new <ArrowRight /></a></div>
       <header className="nav-shell">
         <div className="site-container grid grid-cols-[minmax(0,1fr)_auto] items-center py-4 lg:flex lg:justify-between">
           <Logo />
-          <nav className="hidden items-center gap-8 text-sm text-muted-foreground lg:flex" aria-label="Main navigation">{[["Features","#features"],["Case Studies","#stories"],["Pricing","#pricing"],["Resources","#faq"]].map(([label,href]) => <a className="nav-link" href={href} key={label}>{label}</a>)}</nav>
+          <nav className="hidden items-center gap-8 text-sm text-muted-foreground lg:flex" aria-label="Main navigation"><a className="nav-link" href="#features">Features</a><AutomationMegaMenu/><a className="nav-link" href="/case-studies/meta-lead-gen">Case Studies</a><a className="nav-link" href="/portfolio">Portfolio</a><a className="nav-link" href="#pricing">Pricing</a><a className="nav-link" href="#faq">Resources</a></nav>
           <div className="hidden items-center gap-3 lg:flex"><Button variant="glass" size="icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>{theme === "dark" ? <Sun /> : <Moon />}</Button><Button variant="hero" onClick={() => setDiscoveryOpen(true)}>Book Discovery Call <ArrowRight /></Button></div>
           <div className="flex items-center gap-2 lg:hidden"><Button variant="glass" size="icon" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} onClick={() => setTheme(theme === "dark" ? "light" : "dark")}>{theme === "dark" ? <Sun /> : <Moon />}</Button><Button aria-label="Open menu" variant="glass" size="icon" onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? <X /> : <Menu />}</Button></div>
         </div>
-        {mobileOpen && <nav className="site-container grid gap-2 border-t border-border py-4 lg:hidden">{[["Features","#features"],["Case Studies","#stories"],["Pricing","#pricing"],["Resources","#faq"]].map(([label,href]) => <a onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm text-muted-foreground hover:bg-card" href={href} key={label}>{label}</a>)}<Button variant="hero" className="mt-2" onClick={() => { setMobileOpen(false); setDiscoveryOpen(true); }}>Book Discovery Call</Button></nav>}
+        {mobileOpen && <nav className="site-container grid gap-2 border-t border-border py-4 lg:hidden"><a onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm text-muted-foreground hover:bg-card" href="#features">Features</a><a onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm text-muted-foreground hover:bg-card" href="/case-studies/meta-lead-gen">Case Studies</a><a onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm text-muted-foreground hover:bg-card" href="/portfolio">Portfolio</a><details className="rounded-md border border-border bg-card/50 p-3"><summary className="cursor-pointer text-sm font-semibold">AI & Automation</summary><div className="mt-3 grid gap-2">{automationMenuGroups.flatMap((group) => group.items).map(([title, , slug]) => <Link onClick={() => setMobileOpen(false)} className="rounded px-2 py-2 text-sm text-muted-foreground hover:bg-accent" to="/solutions/$slug" params={{ slug }} key={slug}>{title}</Link>)}</div></details><a onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm text-muted-foreground hover:bg-card" href="#pricing">Pricing</a><a onClick={() => setMobileOpen(false)} className="rounded-md px-3 py-3 text-sm text-muted-foreground hover:bg-card" href="#faq">Resources</a><Button variant="hero" className="mt-2" onClick={() => { setMobileOpen(false); setDiscoveryOpen(true); }}>Book Discovery Call</Button></nav>}
       </header>
 
       <section className="hero-section" onPointerMove={handleHeroPointerMove} onPointerLeave={resetHeroPointer}>
@@ -398,23 +612,50 @@ function Index() {
         <div className="hero-mesh" />
         <div className="hero-particles" />
         <div className="site-container relative z-10 pt-20 text-center sm:pt-28">
-          <div className="eyebrow"><Sparkles /> AI-powered funnel operating system</div>
-          <h1 className="mx-auto mt-7 max-w-5xl font-display text-5xl font-extrabold leading-[1.02] sm:text-7xl lg:text-8xl" aria-label="Your next high-converting funnel, built in minutes.">
-            <span className="text-reveal-line"><span>Your next high-converting</span></span>
-            <span className="text-reveal-line"><span>funnel, <span className="text-gradient">built in minutes.</span></span></span>
+          <div className="eyebrow"><Sparkles /> AI-POWERED FUNNEL OPERATING SYSTEM</div>
+          <h1 className="mx-auto mt-8 max-w-5xl font-display text-4xl font-extrabold tracking-[-0.06em] sm:text-5xl lg:text-[5rem]" aria-label="MISSION STATEMENT">
+            <span className="inline-flex items-center gap-4 text-gradient">
+              <span aria-hidden="true" className="text-3xl sm:text-4xl lg:text-5xl">★</span>
+              <span>MISSION STATEMENT</span>
+            </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg">Launch pages, checkout, email, testing, and analytics from one intelligent workspace. No code. No tool chaos. Just more revenue.</p>
-          <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row"><Button variant="hero" size="xl">Build your funnel now <ArrowRight /></Button><DemoDialog><Button variant="glass" size="xl"><CirclePlay /> Watch 60-sec demo</Button></DemoDialog></div>
-          <p className="mt-4 text-xs text-muted-foreground">14-day free trial · No credit card · Cancel anytime</p>
-          <div className="relative mx-auto mt-14 max-w-5xl sm:mt-20"><div className="hero-halo" /><Dashboard /></div>
+          <p className="mx-auto mt-6 max-w-5xl text-center text-sm font-medium leading-[1.25] tracking-[-0.035em] text-muted-foreground sm:text-base lg:text-[1.45rem]" aria-label="We build the CRM, AI voice agents, chatbots, workflows, funnels and integrations that move a lead from first enquiry to booked appointment, without anyone on your team chasing it.">
+            We build the CRM, AI voice agents, chatbots, workflows, funnels and integrations that move a lead from first enquiry to booked appointment, without anyone on your team chasing it.
+          </p>
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button variant="hero" size="xl" onClick={() => setDiscoveryOpen(true)}>Book Discovery Call <ArrowRight /></Button>
+            <Button variant="glass" size="xl" onClick={() => window.location.href = '#features'}>Explore Our Services</Button>
+          </div>
         </div>
       </section>
 
       <section className="border-y border-border bg-surface/50 py-6" aria-label="Customer brands"><p className="mb-5 text-center text-[10px] font-bold uppercase text-muted-foreground">Powering ambitious teams worldwide</p><div className="logo-marquee"><div className="logo-track">{["NORTHSTAR", "LUMA", "KINETIC", "VERTEX", "OUTPOST", "WAVEFORM", "NORTHSTAR", "LUMA", "KINETIC", "VERTEX", "OUTPOST", "WAVEFORM"].map((brand, i) => <span key={`${brand}-${i}`}>{brand}</span>)}</div></div></section>
 
       <section id="features" className="section-space site-container">
-        <div className="section-heading"><div><span className="kicker">EVERYTHING CONNECTED</span><h2>One system. Every step to <span className="text-gradient">the sale.</span></h2></div><p>Stop duct-taping tools together. TechPaapi brings your entire customer journey into one fast, focused platform.</p></div>
-        <div className="mt-14 grid gap-3 md:grid-cols-2 lg:grid-cols-3">{features.map((feature, i) => <TiltCard className="feature-card" key={feature.title}><div className="feature-number">0{i+1}</div><div className="feature-icon"><feature.icon /></div><h3>{feature.title}</h3><p>{feature.text}</p><span className="feature-link">Explore feature <ArrowRight /></span></TiltCard>)}</div>
+        <div className="section-heading"><div><span className="kicker">THE TECH PAAPI 5-PILLAR SERVICE ARCHITECTURE</span><h2>Built to compound revenue across every layer of the funnel.</h2></div><p>TECH PAAPI organizes its capabilities into five distinct operational pillars designed to deliver compounding returns.</p></div>
+        <div className="mt-14 grid gap-3 md:grid-cols-2 lg:grid-cols-3">{features.map((feature, i) => <TiltCard className="feature-card" key={feature.title}><div className="feature-number">0{i+1}</div><div className="feature-icon"><feature.icon /></div><h3>{feature.title}</h3><p>{feature.text}</p><a href={`/services/${feature.slug}`} className="feature-link">Explore feature <ArrowRight /></a></TiltCard>)}</div>
+      </section>
+
+      <section id="deployment" className="deployment-section section-space border-y border-border bg-surface/35">
+        <div className="site-container">
+          <div className="section-heading">
+            <div><span className="kicker">OPERATIONAL SPRINT: 30 DAYS TO LIVE DEPLOYMENT</span><h2>From deep audit to a live revenue system.</h2></div>
+            <p><strong className="text-foreground">The 30-Day Guarantee:</strong> TECH PAAPI delivers a fully live, tested revenue system inside the client&apos;s account in 30 days.</p>
+          </div>
+
+          <div className="deployment-workflow mt-14">
+            <div className="deployment-track" aria-hidden="true"><span /></div>
+            {deploymentStages.map((stage, index) => (
+              <article className="deployment-stage" key={stage.number}>
+                <div className="deployment-node"><span>{stage.number}</span></div>
+                <p className="deployment-phase">{stage.phase}</p>
+                <h3>{stage.label}</h3>
+                <p className="mt-3 text-sm leading-6 text-muted-foreground">{stage.text}</p>
+                {index < deploymentStages.length - 1 && <div className="deployment-arrow" aria-hidden="true">→</div>}
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
 
       <section className="section-space border-y border-border bg-surface/35">
@@ -426,7 +667,7 @@ function Index() {
       <section className="metrics-section"><div className="site-container grid gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-3">{[["$108M+","customer revenue generated"],["12,400+","funnels launched"],["99.99%","platform uptime"]].map(([value,label]) => <div className="metric" key={value}><strong>{value}</strong><span>{label}</span></div>)}</div></section>
 
       <section id="stories" className="section-space site-container">
-        <div className="mx-auto max-w-2xl text-center"><span className="kicker">CASE STUDIES</span><h2 className="section-title mt-4">Real founders. <span className="text-gradient">Real results.</span></h2><p className="section-copy mx-auto mt-5">Watch what happens when the funnel is built right.</p></div>
+        <div className="mx-auto max-w-2xl text-center"><span className="kicker">VIDEO CASE STUDIES</span><h2 className="section-title mt-4">Real founders. <span className="text-gradient">Real results.</span></h2><p className="section-copy mx-auto mt-5">Watch what happens when the funnel is built right.</p><a href="/portfolio" className="feature-link mx-auto mt-6 w-fit">View full case study portfolio <ArrowRight /></a></div>
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {stories.map((story) => (
             <TiltCard key={story.name} className="story-card">
@@ -446,8 +687,55 @@ function Index() {
         </div>
       </section>
 
-      <section id="pricing" className="section-space border-y border-border bg-surface/35"><div className="site-container"><div className="mx-auto max-w-2xl text-center"><span className="kicker">SIMPLE, SCALABLE PRICING</span><h2 className="section-title mt-4">Start small. Grow without limits.</h2><p className="section-copy mx-auto mt-5">Every plan includes the complete builder, secure hosting, and zero transaction fees.</p><div className="mt-7 inline-flex items-center gap-3 rounded-full border border-border bg-card px-4 py-2.5"><span className={!annual?"font-bold":"text-muted-foreground"}>Monthly</span><Switch checked={annual} onCheckedChange={setAnnual} aria-label="Use annual billing" /><span className={annual?"font-bold":"text-muted-foreground"}>Annual</span><span className="rounded-full bg-success/10 px-2 py-1 text-[10px] font-bold text-success">SAVE 20%</span></div></div>
-          <div className="mt-14 grid gap-4 lg:grid-cols-3">{plans.map((plan)=><TiltCard key={plan.name} className={`pricing-card ${plan.popular?"pricing-popular":""}`}>{plan.popular&&<div className="popular-badge">MOST POPULAR</div>}<h3>{plan.name}</h3><p className="mt-2 text-sm text-muted-foreground">{plan.text}</p><div className="mt-7 flex items-end gap-1"><span className="font-display text-5xl font-extrabold">${annual?Math.round(plan.monthly*.8):plan.monthly}</span><span className="mb-1 text-muted-foreground">/mo</span></div>{annual&&<p className="mt-2 text-xs text-muted-foreground">Billed annually</p>}<Button variant={plan.popular?"hero":"glass"} className="mt-7 h-11 w-full">Start 14-day trial <ArrowRight /></Button><ul className="mt-8 space-y-3">{plan.items.map(item=><li key={item} className="flex gap-3 text-sm"><Check className="size-4 shrink-0 text-success" />{item}</li>)}</ul></TiltCard>)}</div>
+      <section id="case-study-portfolio" className="case-study-section section-space border-y border-border bg-surface/35">
+        <div className="site-container">
+          <div className="section-heading">
+            <div><span className="kicker">VERIFIED CASE STUDIES PORTFOLIO</span><h2>Proof, performance, and the system behind the result.</h2></div>
+            <p>Explore the operating challenges, technical interventions, and measurable outcomes behind four TechPaapi engagements.</p>
+          </div>
+          <div className="case-study-grid mt-14">
+            {caseStudies.map((study, index) => (
+              <article className="case-study-card" key={study.title}>
+                <div className="case-study-card__scan" aria-hidden="true" />
+                <div className="case-study-card__header">
+                  <div>
+                    <span className="case-study-index">0{index + 1}</span>
+                    <p className="mt-4 text-xs font-bold uppercase tracking-[0.16em] text-primary">Case study {index + 1}</p>
+                    <h3 className="mt-2 text-2xl font-bold tracking-[-0.04em] text-foreground">{study.title}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">{study.client}</p>
+                  </div>
+                  <BadgeCheck className="size-6 shrink-0 text-success" aria-label="Verified case study" />
+                </div>
+
+                <div className="case-study-metric mt-6">
+                  <span className="case-study-metric__label">★ Key impact metric</span>
+                  <strong>{study.metric}</strong>
+                  <span>{study.metricDetail}</span>
+                </div>
+
+                <div className="mt-7 grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+                  <div className="space-y-5 text-sm leading-6 text-muted-foreground">
+                    <p><strong className="text-foreground">Client challenge:</strong> {study.challenge}</p>
+                    <p><strong className="text-foreground">TECH PAAPI solution:</strong> {study.solution}</p>
+                  </div>
+                  <div className="case-study-matrix" aria-label={`${study.title} outcome metrics`}>
+                    <div className="case-study-matrix__topline"><span>Outcome matrix</span><span>Live impact</span></div>
+                    {study.outcomes.map((outcome, outcomeIndex) => (
+                      <div className="case-study-matrix__row" key={outcome}>
+                        <div className="case-study-matrix__bar"><span style={{ "--bar-size": `${study.bars[outcomeIndex]}%` } as CSSProperties} /></div>
+                        <p>{outcome}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+        <section id="pricing" className="section-space border-y border-border bg-surface/35"><div className="site-container"><div className="mx-auto max-w-2xl text-center"><span className="kicker">SIMPLE, SCALABLE PRICING</span><h2 className="section-title mt-4">Start small. Grow without limits.</h2><p className="section-copy mx-auto mt-5">Choose the delivery tier that matches your growth stage. Every package is built around measurable revenue operations, not generic retainers.</p></div>
+          <div className="mt-14 grid items-stretch gap-4 lg:grid-cols-3">{plans.map((plan)=><TiltCard key={plan.name} className={`pricing-card ${plan.popular?"pricing-popular":""}`}>{plan.popular&&<div className="popular-badge">MOST POPULAR</div>}<div className="flex items-start justify-between gap-3"><div><h3>{plan.name}</h3><p className="mt-1 text-xs font-bold uppercase tracking-[0.12em] text-primary">{plan.label}</p></div></div><p className="mt-4 min-h-12 text-sm leading-6 text-muted-foreground">{plan.text}</p><div className="mt-7 flex flex-wrap items-end gap-x-1 gap-y-0.5"><span className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">{plan.price}</span><span className="mb-1 text-muted-foreground">/mo</span></div><p className="mt-2 text-xs font-medium text-muted-foreground">{plan.setup}</p><Button variant={plan.popular?"hero":"glass"} className="mt-7 h-11 w-full">Book discovery call <ArrowRight /></Button><ul className="mt-8 space-y-3">{plan.items.map(item=><li key={item} className="flex gap-3 text-sm leading-5"><Check className="size-4 shrink-0 text-success" />{item}</li>)}</ul></TiltCard>)}</div>
         </div></section>
 
       <section id="faq" className="section-space site-container"><div className="grid gap-12 lg:grid-cols-[.75fr_1.25fr]"><div><span className="kicker">QUESTIONS, ANSWERED</span><h2 className="section-title mt-4">Everything you need to know.</h2><p className="section-copy mt-5">Still curious? Our team is one message away.</p><Button variant="glass" className="mt-7">Talk to a funnel expert <ArrowRight /></Button></div><Accordion type="single" collapsible className="border-t border-border">{faqs.map(({ question, answer })=><AccordionItem key={question} value={question} className="border-border"><AccordionTrigger className="py-6 text-base hover:no-underline">{question}</AccordionTrigger><AccordionContent className="max-w-2xl pb-6 leading-7 text-muted-foreground">{answer}</AccordionContent></AccordionItem>)}</Accordion></div></section>
